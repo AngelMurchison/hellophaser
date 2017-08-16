@@ -4,7 +4,6 @@
     "start": "browser-sync start --server . --files ."
   },
   "dependencies": {
-    "browser-sync": "^2.18.12",
-    "surge": "^0.19.0"
+    "browser-sync": "^2.18.12"
   }
 }
