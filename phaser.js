@@ -1,5 +1,3 @@
-// APP
-  let thisView = ''
 var game = new Phaser.Game(800, 366, Phaser.AUTO, '', {
   preload: preload,
   create: create,
@@ -9,7 +7,6 @@ var score = 0
 var scoreText
 
 function preload() {
-
   game.load.image('sky', 'img/sky.png')
   game.load.image('ground', 'img/platform.png')
   game.load.image('star', 'img/star.png')
@@ -19,9 +16,6 @@ function preload() {
 }
 
 function create() {
-  thisView = document.body.querySelector('canvas')
-  thisView.style.width = '100vw'
-  thisView.style.height = '100vh'
   game.physics.startSystem(Phaser.Physics.ARCADE)
   sky = game.add.sprite(0, 0, 'sky')
   // {player}
@@ -38,7 +32,7 @@ function create() {
   baddie = game.add.sprite(32, game.world.height - 240, 'baddie')
   game.physics.arcade.enable(baddie)
   baddie.body.bounce.y = 0.2
-  baddie.body.gravity.y = 300
+  baddie.body.gravity.y = 301
   baddie.body.collideWorldBounds = true
   baddie.animations.add('left', [0, 1], 10, true)
   baddie.animations.add('right', [2, 3], 10, true)
@@ -113,4 +107,12 @@ function update() {
     baddie.body.velocity.x = -100
     baddie.animations.play('left')
   }
+}
+
+window.onload = function (){
+  let sideBar = document.querySelector('.sideBar')
+  let showMenuButton = document.querySelector('#showButton')
+  showMenuButton.addEventListener('click', () => {
+    sideBar.classList.toggle('menu-show')
+  })
 }
