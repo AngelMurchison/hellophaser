@@ -101,6 +101,8 @@ function update() {
     player.animations.stop()
     player.frame = 4
   }
+
+  // {baddie stuff}
   let spacebar = game.input.keyboard.addKey(32)
   if(spacebar.isDown && !player.alive){
       baddie.kill()
