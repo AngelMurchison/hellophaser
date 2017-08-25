@@ -19,7 +19,7 @@ function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE)
   sky = game.add.sprite(0, 0, 'sky')
   // {player}
-  player = game.add.sprite(32, game.world.height - 150, 'dude')
+  player = game.add.sprite(400, game.world.height - 300, 'dude')
   game.physics.arcade.enable(player)
   player.body.bounce.y = 0.1
   player.body.gravity.y = 300
@@ -36,12 +36,13 @@ function create() {
   baddie.body.collideWorldBounds = true
   baddie.animations.add('left', [0, 1], 10, true)
   baddie.animations.add('right', [2, 3], 10, true)
+  baddie.body.velocity.x = 100
 
   // [stars]
   stars = game.add.group()
   stars.enableBody = true
-  for (var i = 0; i < 1; i++) {
-    var star = stars.create(i * 2, 0, 'star')
+  for (var i = 0; i < 100; i++) {
+    var star = stars.create(i * 15, 0, 'star')
     star.body.gravity.y = 10 + Math.random() * 6
     star.body.bounce.y = 0.6 + Math.random() * 0.2
   }
@@ -63,12 +64,8 @@ function create() {
 }
 
 function update() {
-  // initialization
   player.body.velocity.x = 0
-  let currentBaddieSpeed = 100
-  let currentBaddieAnim = 'right'
-  baddie.body.velocity.x = currentBaddieSpeed
-  baddie.animations.play(currentBaddieAnim)
+
 
   // {physics}
   game.physics.arcade.collide(player, platforms)
@@ -84,6 +81,10 @@ function update() {
     },
     null
   )
+  game.physics.arcade.overlap(player, baddie, () => {
+    player.kill()
+    scoreText.text = 'Press space to try again!'
+  })
 
   // {cursors}
   cursors = game.input.keyboard.createCursorKeys()
@@ -100,14 +101,21 @@ function update() {
     player.animations.stop()
     player.frame = 4
   }
-  if ((baddie.centerX = 16)) {
-    currentBaddieSpeed = 100
-    baddie.animations.play('right')
-  } else if ((baddie.centerX = 644)) {
+  let spacebar = game.input.keyboard.addKey(32)
+  if(spacebar.isDown && !player.alive){
+      baddie.kill()
+      preload()
+      create()
+    }
+  
+  if(baddie.body.blocked.right){
     baddie.body.velocity.x = -100
-    baddie.animations.play('left')
+  }else if(baddie.body.blocked.left){
+    baddie.body.velocity.x = 100
   }
+
 }
+
 
 window.onload = function (){
   let sideBar = document.querySelector('.sideBar')
@@ -115,4 +123,6 @@ window.onload = function (){
   showMenuButton.addEventListener('click', () => {
     sideBar.classList.toggle('menu-show')
   })
+
+   
 }
